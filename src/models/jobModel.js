@@ -24,7 +24,7 @@ const jobSchema = new mongoose.Schema({
     },
     userId: {
         type: ObjectId,
-        ref: "User",
+        ref: "user",
         required: true
     },
     isDeleted: {

@@ -10,23 +10,23 @@ const createJob = async (req, res) => {
 
         let { title, description, email, skills, experience } = data
 
-        if (validation.isValidBody(data)) return res.status(400).send({ status: false, msg: "please provide  details" })
+        if (validation.isValidBody(data)) return res.status(400).send({ status: false, msg: "Provide all required details" })
 
         data.userId = userId
 
-        if (!validation.isValid(title)) return res.status(400).send({ status: false, message: "title is required" })
+        if (!validation.isValid(title)) return res.status(400).send({ status: false, message: "Title is required" })
 
-        if (!validation.isValid(description)) return res.status(400).send({ status: false, message: "description is required" })
+        if (!validation.isValid(description)) return res.status(400).send({ status: false, message: "Description is required" })
 
-        if (!validation.isValid(email)) return res.status(400).send({ status: false, message: "email is required" })
-        if (!validation.isValidEmail(email)) return res.status(400).send({ status: false, message: "email is not valid" })
+        if (!validation.isValid(email)) return res.status(400).send({ status: false, message: "Email is required" })
+        if (!validation.isValidEmail(email)) return res.status(400).send({ status: false, message: "Email is not valid" })
         data.email = email.toLowerCase()
 
-        if (!validation.isValid(skills)) return res.status(400).send({ status: false, message: "skills is required" })
+        if (!validation.isValid(skills)) return res.status(400).send({ status: false, message: "Skills are required" })
         skills = skills.toLowerCase().split(",")
         data.skills = skills
 
-        if (!validation.isValid(experience)) return res.status(400).send({ status: false, message: "experience is required" })
+        if (!validation.isValid(experience)) return res.status(400).send({ status: false, message: "Experience is required" })
 
         let createJob = await jobModel.create(data)
         res.status(201).send({ status: true, message: "Successfully created", data: createJob })
@@ -103,7 +103,7 @@ const updateJob = async (req, res) => {
         }
 
         let updateData = await jobModel.findOneAndUpdate({_id:jobId},{...data},{new:true}).select({createdAt:0,updatedAt:0,__v:0})
-        return res.status(200).send(({status:true,message:"successfully updated",data:updateData}))
+        return res.status(200).send(({status:true,message:"Successfully updated",data:updateData}))
 
     } catch (error) {
         res.status(500).send({ status: false, message: error.message })
@@ -116,7 +116,7 @@ const deleteJob = async (req, res) => {
 
         await jobModel.findOneAndUpdate({ _id: jobId }, { isDeleted: true })
 
-        return res.status(200).send({ status: true, message: "successfully deleted" })
+        return res.status(200).send({ status: true, message: "Successfully deleted" })
     } catch (error) {
         res.status(500).send({ status: false, message: error.message })
     }

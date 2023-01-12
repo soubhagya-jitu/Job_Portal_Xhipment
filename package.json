@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/soubhagya-jitu/Job_Portal_Xhipment.git"
   },
-  "author": "",
+  "author": "Soubhagya Samal",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/soubhagya-jitu/Job_Portal_Xhipment/issues"
@@ -20,6 +20,7 @@
   "dependencies": {
     "aws-sdk": "^2.1292.0",
     "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.8.3",

@@ -8,28 +8,28 @@ const createUser = async (req, res) => {
         let data = req.body;
         let { firstName, lastName, email, phone, password } = data
 
-        if (validation.isValidBody(data)) return res.status(400).send({ status: false, msg: "please provide  details" })
+        if (validation.isValidBody(data)) return res.status(400).send({ status: false, msg: "Provide all required  details" })
 
         if (!validation.isValid(firstName)) return res.status(400).send({ status: false, message: "first name is required" })
-        if (!validation.isValidName(firstName)) return res.status(400).send({ status: false, message: "not a valid firstname" })
+        if (!validation.isValidName(firstName)) return res.status(400).send({ status: false, message: "Not a valid firstname" })
 
         if (!validation.isValid(lastName)) return res.status(400).send({ status: false, message: "lastname is required" })
-        if (!validation.isValidName(lastName)) return res.status(400).send({ status: false, message: "lastname is not valid" })
+        if (!validation.isValidName(lastName)) return res.status(400).send({ status: false, message: "Not valid lastname" })
 
 
         if (!validation.isValid(email)) return res.status(400).send({ status: false, message: "email is required" })
         if (!validation.isValidEmail(email)) return res.status(400).send({ status: false, message: "email is not valid" })
         let checkEmail = await userModel.findOne({ email: email })
-        if (checkEmail) return res.status(409).send({ status: false, msg: "email already exist" })
+        if (checkEmail) return res.status(409).send({ status: false, msg: "This email already used" })
         data.email=email.toLowerCase()
 
-        if (!validation.isValid(phone)) return res.status(400).send({ status: false, message: "phone is required" })
-        if (!validation.isValidPhone(phone)) return res.status(400).send({ status: false, message: "phone number is not valid" })
+        if (!validation.isValid(phone)) return res.status(400).send({ status: false, message: "Phone is required" })
+        if (!validation.isValidPhone(phone)) return res.status(400).send({ status: false, message: "Phone number is not valid" })
         let checkPhone = await userModel.findOne({ phone: phone })
-        if (checkPhone) return res.status(409).send({ status: false, msg: "Phone already exist" })
+        if (checkPhone) return res.status(409).send({ status: false, msg: "This phone no already used" })
 
 
-        if (!validation.isValid(password)) return res.status(400).send({ status: false, message: "Pasworrd is required" })
+        if (!validation.isValid(password)) return res.status(400).send({ status: false, message: "Password is required" })
         if (!validation.isValidPwd(password)) return res.status(400).send({ status: false, message: "Password length should be 8 to 15 characters with atleast one uppercase , number and special character" })
 
         const saltRounds = 10
@@ -58,10 +58,10 @@ const loginUser = async function (req, res) {
       if (!validation.isValid(password)) return res.status(400).send({ status: false, message: "Pasworrd is required" })
   
       let findUser = await userModel.findOne({ email: email })
-      if (!findUser) return res.status(400).send({ status: false, message: "the email id entered is wrong" })
+      if (!findUser) return res.status(400).send({ status: false, message: "The email-id is wrong" })
   
       let bcryptPass = await bcrypt.compare(password, findUser.password)
-      if (!bcryptPass) return res.status(400).send({ status: false, message: "Not a correct password" })
+      if (!bcryptPass) return res.status(400).send({ status: false, message: "Password incorrect" })
   
       let token = jwt.sign({ userId: findUser._id }, "Job_Portal_Xhipment", { expiresIn: '1d' });
   

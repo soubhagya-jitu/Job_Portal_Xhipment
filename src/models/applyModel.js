@@ -20,11 +20,11 @@ const applyJobSchema = new mongoose.Schema({
     },
     userId: {
         type: ObjectId,
-        ref: "users"
+        ref: "user"
     },
     jobId: {
         type: ObjectId,
-        ref: "jobs"
+        ref: "job"
     },
     isDeleted: {
         type: Boolean,

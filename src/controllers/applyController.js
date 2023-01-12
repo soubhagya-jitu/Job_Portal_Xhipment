@@ -1,8 +1,7 @@
 const applyModel = require("../models/applyModel")
+const jobModel = require("../models/jobModel")
 const aws = require("../aws/aws")
 const validation = require("../validations/validation")
-const { findOneAndDelete } = require("../models/applyModel")
-const { findOneAndUpdate } = require("../models/jobModel")
 
 
 const applyJob = async (req, res) => {
@@ -12,21 +11,27 @@ const applyJob = async (req, res) => {
         let jobId = req.params.jobId
 
         let { name, email } = data
-        if (validation.isValidBody(data)) return res.status(400).send({ status: false, msg: "provide all the required details" })
+        if (validation.isValidBody(data)) return res.status(400).send({ status: false, msg: "Provide all the required details" })
 
         data.userId = userId
         data.jobId = jobId
 
-        let findJob = await applyModel.findOne({ userId: userId, jobId: jobId })
-        if (findJob) {
+        let findAppliedJob = await applyModel.findOne({ userId: userId, jobId: jobId })
+        if (findAppliedJob) {
             return res.status(400).send({ status: false, message: "You have already applied for the job" })
         }
 
-        if (!validation.isValid(name)) return res.status(400).send({ status: false, message: "namee is required" })
-        if (!validation.isValidName(name)) return res.status(400).send({ status: false, message: "name is not valid" })
+        let findJob = await jobModel.findOne({_id: jobId,isDeleted: false })
+        if (!findJob) {
+            return res.status(400).send({ status: false, message: "This job is no longer available" })
+        }
 
-        if (!validation.isValid(email)) return res.status(400).send({ status: false, message: "email is required" })
-        if (!validation.isValidEmail(email)) return res.status(400).send({ status: false, message: "email is not valid" })
+
+        if (!validation.isValid(name)) return res.status(400).send({ status: false, message: "Name is required" })
+        if (!validation.isValidName(name)) return res.status(400).send({ status: false, message: "Name is not valid" })
+
+        if (!validation.isValid(email)) return res.status(400).send({ status: false, message: "Email is required" })
+        if (!validation.isValidEmail(email)) return res.status(400).send({ status: false, message: "Email is not valid" })
         data.email = email.toLowerCase()
 
         let files = req.files
@@ -83,7 +88,7 @@ const getAppliedJobByApplyId = async (req, res) => {
     }
 }
 
-const applicantsByJobId = async (req, res) => {
+const getApplicantsByJobId = async (req, res) => {
     try {
         let jobId = req.params.jobId
         let page = req.query.page
@@ -107,7 +112,7 @@ const updateAppliedJob = async (req, res) => {
         let data = req.body
         let { name, email } = data
 
-        if (validation.isValidBody(data)) return res.status(400).send({ status: false, msg: "provide the required details for updation" })
+        if (validation.isValidBody(data)) return res.status(400).send({ status: false, msg: "Provide the required details for updation" })
 
         if (name) {
             if (!validation.isValidName(name)) return res.status(400).send({ status: false, message: "name is not valid" })
@@ -150,4 +155,4 @@ const deleteAppliedJob = async (req, res) => {
     }
 }
 
-module.exports = { applyJob, getAppliedJob, getAppliedJobByApplyId, applicantsByJobId, updateAppliedJob, deleteAppliedJob }
+module.exports = { applyJob, getAppliedJob, getAppliedJobByApplyId, getApplicantsByJobId, updateAppliedJob, deleteAppliedJob }

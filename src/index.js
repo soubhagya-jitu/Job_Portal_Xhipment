@@ -2,11 +2,13 @@ const express = require("express")
 const route = require("./routes/route")
 const mongoose = require("mongoose")
 const multer = require("multer")
-const { query } = require("express")
+const cors = require("cors")
 const app = express()
 
-let upload = multer()
 app.use(express.json())
+app.use(cors())
+
+let upload = multer()
 app.use(upload.any())
 
 mongoose.connect("mongodb+srv://manaskumar:iFVJhjYrsH7iars8@cluster0.s4pqkzd.mongodb.net/Job_Portal?retryWrites=true&w=majority", {

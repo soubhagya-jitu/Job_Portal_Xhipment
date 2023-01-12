@@ -3,7 +3,7 @@ const router = express.Router()
 let {authentication,authorization,authorization1} = require("../authentications/authentication")
 let {createUser,loginUser} = require("../controllers/userController")
 let {createJob,getJob,getJobByJobId,updateJob,deleteJob} = require("../controllers/jobController")
-let {applyJob,getAppliedJob,getAppliedJobByApplyId,applicantsByJobId,updateAppliedJob,deleteAppliedJob} = require("../controllers/applyController")
+let {applyJob,getAppliedJob,getAppliedJobByApplyId,getApplicantsByJobId,updateAppliedJob,deleteAppliedJob} = require("../controllers/applyController")
 
 router.post("/register",createUser)
 router.post("/login",loginUser)
@@ -17,13 +17,12 @@ router.delete("/deleteJob/:jobId",authentication,authorization,deleteJob)
 router.post("/applyJob/:jobId",authentication,applyJob)
 router.get("/getAppliedJob",authentication,getAppliedJob)
 router.get("/getAppliedJob/:applyId",authentication,getAppliedJobByApplyId)
-router.get("/applicants/:jobId",authentication,applicantsByJobId)
+router.get("/getApplicants/:jobId",authentication,getApplicantsByJobId)
 router.put("/updateAppliedJob/:applyId",authentication,authorization1,updateAppliedJob)
 router.delete("/deleteAppliedJob/:applyId",authentication,authorization1,deleteAppliedJob)
 
 
 router.all("/*/", async function (req, res){
-
     res.status(404).send({status:false, msg: "Wrong url"})
 })
 
