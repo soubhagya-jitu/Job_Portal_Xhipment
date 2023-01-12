@@ -15,7 +15,8 @@ const applyJobSchema = new mongoose.Schema({
         required: true
     },
     coverletter: {
-        type: String
+        type: String,
+        required: true
     },
     userId: {
         type: ObjectId,
